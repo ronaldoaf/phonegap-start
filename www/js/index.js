@@ -36,11 +36,17 @@
 	cordova.plugins.notification.local.on("trigger", function (notification) {
         if (notification.id != 1) return;
 		
-		navigator.vibrate(5000);
+		navigator.vibrate(10000);
 		
     });
 	
-	
+	cordova.plugins.notification.local.on("click", function (notification) {
+		$.getJSON('http://aposte.me/live/teste.php', function(data){ 
+			if(data.alerta) {
+				window.open('http://aposte.me', '_system');
+			};
+		});
+	});
 	
 	
 };
