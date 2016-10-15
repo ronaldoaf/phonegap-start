@@ -1,6 +1,6 @@
-# Hello World PhoneGap Application [![bitHound Score][bithound-img]][bithound-url]
+# Hello World PhoneGap Application With LocalNotification Plugin
 
-> A Hello World application built with PhoneGap
+> A Hello World application built With LocalNotification Plugin
 
 ## Usage
 
