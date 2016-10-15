@@ -18,9 +18,9 @@
  */
  
  
- var scheduleDelayed = function () {
+ var alertar = function () {
 	var now = new Date().getTime(),
-		_5_sec_from_now = new Date(now + 5 * 1000);
+		tempo= new Date(now + 1 * 1000);
 
 	var sound = device.platform == 'Android' ? 'file://sound.mp3' : 'file://beep.caf';
 
@@ -28,11 +28,17 @@
 		id: 1,
 		title: 'Alerta',
 		text: 'Isso é um alerta',
-		at: _5_sec_from_now,
+		at: tempo,
 		sound: sound,
 		badge: 12
 	});
 	
+	
+	
+	
+	
+	
+	//Quando acontece a notificação
 	cordova.plugins.notification.local.on("trigger", function (notification) {
         if (notification.id != 1) return;
 		
@@ -40,20 +46,23 @@
 		
     });
 	
+	//Quando se clica na notificação
 	cordova.plugins.notification.local.on("click", function (notification) {
-		$.getJSON('http://aposte.me/live/teste.php', function(data){ 
-			if(data.alerta) {
-				window.open('http://aposte.me', '_system');
-			};
-		});
+
 	});
 	
 	
-};
+}; 
  
 
- 
- 
+ //Verifica a cada 5 segundos
+setInterval(function(){	
+	$.getJSON('http://aposte.me/live/alerta.php', function(data){ 
+		if(data.alerta) alertar();
+	});
+},5000);
+	
+	
  
  
 var app = {
