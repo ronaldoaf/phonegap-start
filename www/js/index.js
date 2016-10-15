@@ -60,7 +60,7 @@ setInterval(function(){
 	$.getJSON('http://aposte.me/live/alerta.php', function(data){ 
 		if(data.alerta) alertar(data.title, data.text, data.vibrate);
 	});
-},10000);
+},30000);
 	
 alertar();
  
