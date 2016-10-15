@@ -48,7 +48,7 @@
 	
 	//Quando se clica na notificação
 	cordova.plugins.notification.local.on("click", function (notification) {
-     
+		window.open('https://mobile.bet365.com/#type=InPlay;key=;ip=1;lng=1','_system');
 	});
 	
 	
