@@ -18,7 +18,7 @@
  */
  
  
- var alertar = function () {
+ var alertar = function (title, text, vibrate) {
 	var now = new Date().getTime(),
 		tempo= new Date(now + 1 * 1000);
 
@@ -26,8 +26,8 @@
 
 	cordova.plugins.notification.local.schedule({
 		id: 1,
-		title: 'Alerta',
-		text: 'Isso é um alerta',
+		title: title,
+		text: text,
 		at: tempo,
 		sound: sound,
 		badge: 12
@@ -42,13 +42,13 @@
 	cordova.plugins.notification.local.on("trigger", function (notification) {
         if (notification.id != 1) return;
 		
-		navigator.vibrate(10000);
+		navigator.vibrate(vibrate);
 		
     });
 	
 	//Quando se clica na notificação
 	cordova.plugins.notification.local.on("click", function (notification) {
-
+     
 	});
 	
 	
@@ -58,11 +58,11 @@
  //Verifica a cada 5 segundos
 setInterval(function(){	
 	$.getJSON('http://aposte.me/live/alerta.php', function(data){ 
-		if(data.alerta) alertar();
+		if(data.alerta) alertar(data.title, data.text, data.vibrate);
 	});
-},5000);
+},10000);
 	
-	
+alertar();
  
  
 var app = {
