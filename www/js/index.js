@@ -17,15 +17,21 @@
  * under the License.
  */
  
+window.localStorage['alertas_vistos']=window.localStorage['alertas_vistos'] || '[]';
+
  
- var alertar = function (title, text, vibrate) {
+ 
+ var alertar = function (title, text, vibrate,id) {
 	var now = new Date().getTime(),
 		tempo= new Date(now + 1 * 1000);
 
 	var sound = device.platform == 'Android' ? 'file://sound.mp3' : 'file://beep.caf';
-
+	
+	//Se já tiver visto recente nao manda alerta
+	if($.inArray(id, JSON.parse(window.localStorage['alertas_vistos']) )) return;
+	
 	cordova.plugins.notification.local.schedule({
-		id: 1,
+		id: id,
 		title: title,
 		text: text,
 		at: tempo,
@@ -40,7 +46,7 @@
 	
 	//Quando acontece a notificação
 	cordova.plugins.notification.local.on("trigger", function (notification) {
-        if (notification.id != 1) return;
+       
 		
 		navigator.vibrate(vibrate);
 		
@@ -48,6 +54,13 @@
 	
 	//Quando se clica na notificação
 	cordova.plugins.notification.local.on("click", function (notification) {
+	
+		alertas_vistos=JSON.parse(window.localStorage['alertas_vistos']);
+		
+		alertas_vistos.push(notification.id);
+		
+		window.localStorage['alertas_vistos']=JSON.stringify( alertas_vistos );
+	
 		window.open('https://mobile.bet365.com/#type=InPlay;key=;ip=1;lng=1','_system');
 	});
 	
@@ -58,7 +71,7 @@
  //Verifica a cada 5 segundos
 setInterval(function(){	
 	$.getJSON('http://aposte.me/live/alerta.php', function(data){ 
-		if(data.alerta) alertar(data.title, data.text, data.vibrate);
+		if(data.alerta) alertar(data.title, data.text, data.vibrate, data.id);
 	});
 },30000);
 	
