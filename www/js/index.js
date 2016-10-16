@@ -71,7 +71,12 @@ window.localStorage['alertas_vistos']=window.localStorage['alertas_vistos'] || '
  //Verifica a cada 5 segundos
 setInterval(function(){	
 	$.getJSON('http://aposte.me/live/alerta.php', function(data){ 
-		if(data.alerta) alertar(data.title, data.text, data.vibrate, data.id);
+		if(data.alerta) {
+			$(data.lista).each(function(i,e){
+				alertar(e.title, e.text, e.vibrate, e.id);
+			});
+			
+		}
 	});
 },30000);
 	
